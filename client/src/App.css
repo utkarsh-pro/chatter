@@ -1,0 +1,15 @@
+.App{
+    height: 100%;
+    display: grid;
+    grid-template-rows: 3.2rem 1fr 2rem;
+}
+
+.container{
+    padding: 0 10%;
+}
+
+@media screen and (max-width: 800px){
+    .container{
+        padding: 0 5%;
+    }
+}

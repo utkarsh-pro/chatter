@@ -1,0 +1,28 @@
+.navbar{
+    background-color: #2f3640;
+    height: 3.2rem;
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    color: white;
+}
+.navItems{
+    display: flex;
+    height: 100%;
+    text-align: center;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.1rem;
+}
+.navItems > div{
+    margin: 0 10%;
+}
+.div{
+    display: flex;
+}
+.navItems a {
+    text-decoration: none;
+    color: white;
+    cursor: pointer;
+}

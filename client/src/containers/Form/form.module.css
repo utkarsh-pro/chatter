@@ -1,0 +1,12 @@
+.Form{
+    padding: 2rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.4);
+    min-width: 14rem;
+}
+
+@media screen and (max-width: 350px){
+    .Form{
+        min-width: 12rem;
+    }
+}

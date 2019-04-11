@@ -1,0 +1,15 @@
+.wrapper{
+    margin-top: 1rem;
+    display: grid;
+    grid-template-columns: 2fr 3fr;
+}
+.list, .view{
+    padding: 1rem;
+    border: 1px solid black;
+    height: 80vh;
+    border-radius: 0.5rem;
+}
+.view{
+    display: grid;
+    grid-template-rows: 9.2fr 0.8fr;
+}
