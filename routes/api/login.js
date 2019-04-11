@@ -6,6 +6,9 @@ const secret = require('../../config/keys').secretOrKey;
 const User = require('../../models/User');
 const router = express.Router();
 
+// @route POST /api/login
+// @desc RETURN JWT
+// @access PUBLIC
 router.post('/', (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
@@ -28,10 +31,11 @@ router.post('/', (req, res) => {
                         }
                         // Sign token
                         jwt.sign(payload, secret, { expiresIn: 3600 * 24 }, (err, token) => {
+                            if (err) throw err;
                             res.json({
                                 success: true,
                                 token: 'Bearer ' + token
-                            })
+                            });
                         });
 
                     } else {

@@ -12,6 +12,10 @@ const UserSchema = new Schema({
         type: String,
         required: true
     },
+    friends: {
+        type: Map,
+        of: Array
+    },
     date: {
         type: Date,
         default: Date.now

@@ -3,6 +3,9 @@ const bcrypt = require('bcrypt');
 const User = require('../../models/User');
 const router = express.Router();
 
+// @route POST /api/sign-up
+// @desc return user
+// @access PUBLIC
 router.post('/', (req, res) => {
 
     User.findOne({ username: req.body.username })
