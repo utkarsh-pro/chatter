@@ -1,5 +1,5 @@
 # CHATTER - A simple yet powerful chat application
-### Note: The app is still in it's initial development stage and is not yet ready for production. The aim is to create a fully scalable chat application.
+### Note: The app is still in it's initial development stage and is not yet ready for production. The aim is to create a fully scalable chat application. Don't clone the application as it might not work on your system, it is not yet ready for production and uses many logging as well as developer tools which might lead it to malfunction.
 
 Technologies used: 
 1) HTML (obviously)
