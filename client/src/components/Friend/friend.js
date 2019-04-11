@@ -1,9 +1,9 @@
 import React from 'react';
-import Classes from './message.module.css';
+import './friend.css';
 
 export default props => {
     return (
-        <div className={Classes.msg}>
+        <div className='friend'>
             {props.children}
         </div>
     )

@@ -1,0 +1,7 @@
+.friend{
+    padding: 0.5rem;
+    margin: auto;
+}
+.friend:nth-child(even){
+    background-color: #ced6e0;
+}

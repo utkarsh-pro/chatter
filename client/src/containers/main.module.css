@@ -1,15 +1,39 @@
+*{
+    box-sizing: border-box;
+}
 .wrapper{
     margin-top: 1rem;
     display: grid;
-    grid-template-columns: 2fr 3fr;
-}
-.list, .view{
-    padding: 1rem;
-    border: 1px solid black;
-    height: 80vh;
+    grid-template-columns: 1fr 3fr;
+    border: 1px solid #000000;
     border-radius: 0.5rem;
 }
-.view{
+.list, .view{
+    height: 80vh;
     display: grid;
+}
+.list{
+    padding: 1rem;
+    border-right: 1px solid black;
+    grid-template-rows: 0.6fr 9.4fr;
+}
+.view{
     grid-template-rows: 9.2fr 0.8fr;
+    background-color: #F8EFBA;
+}
+.addFriends{
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid black;
+    border-radius: 0.3rem;
+    outline: none;
+    margin-bottom: 1rem;
+}
+.msgBlock{
+    padding: 1rem;
+}
+.msgBox{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
