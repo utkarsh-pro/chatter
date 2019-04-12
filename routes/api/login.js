@@ -12,7 +12,7 @@ const router = express.Router();
 router.post('/', (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
-
+    console.log('hello');
     // Check for user
     User.findOne({ username })
         .then(user => {

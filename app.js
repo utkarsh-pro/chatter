@@ -18,7 +18,7 @@ app.use(express.static(path.join(__dirname, 'client', 'build')));
 const PORT = process.env.PORT || 5000;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(passport.initialize()); // Initialses passport.js services
+app.use(passport.initialize()); // Initialises passport.js services
 
 //===================================================================
 // DB config
@@ -51,11 +51,12 @@ app.get('/*', function (req, res) {
 // Chat Service **************************************************************************
 
 const io = require('socket.io')(server);
+// This is solutions is temporary and is aimed to be relaced with cache memory (redis implementation)
 const users = [];
 
 io.on('connection', (socket) => {
     socket.on('connected', data => {
-        users.push({ sender: data.sender, reciever: data.reciever, id: socket.id });
+        users.push({ sender: data.sender, id: socket.id });
     })
     socket.on('private', (msg) => {
         let socketId;
@@ -63,13 +64,10 @@ io.on('connection', (socket) => {
             if (user.sender == msg.reciever) {
                 socketId = user.id;
             }
-        })
+        });
         console.log(msg.private);
-        io.to(`${socketId}`).emit('heya', msg.private);
+        io.to(`${socketId}`).emit('message', msg.private);
     });
-
-    socket.on('disconnect', () => console.log('disconnected', socket.id));
-    socket.emit('random', 'helooooo')
 });
 
 // ***************************************************************************************

@@ -1,6 +1,13 @@
 .friend{
     padding: 0.5rem;
     margin: auto;
+    display: block;
+    background-color: transparent;
+    width: 100%;
+    border: none;
+    font-size: 1rem;
+    outline: none;
+    cursor: pointer;
 }
 .friend:nth-child(even){
     background-color: #ced6e0;

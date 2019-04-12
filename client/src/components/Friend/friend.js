@@ -3,9 +3,9 @@ import './friend.css';
 
 export default props => {
     return (
-        <div className='friend'>
+        <button className='friend'>
             {props.children}
-        </div>
+        </button>
     )
 }
 

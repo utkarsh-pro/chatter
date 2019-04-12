@@ -59,7 +59,7 @@ class SignUp extends React.Component {
     render() {
         return (
             <div className={Classes.placeForm}>
-                <Form height='32rem' width='20vw' >
+                <Form height='38rem' width='80vw' >
                     <Helmet>
                         <title>SignUp</title>
                     </Helmet>

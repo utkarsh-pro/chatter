@@ -52,7 +52,7 @@ class Login extends React.Component {
                         Welcome to the chatter.<br /> Connect to your friends around the globe.
                     </div>
                 </div>
-                <Form height='30rem' width='19vw' >
+                <Form height='30rem' width='80%' >
                     <Helmet>
                         <title>Login</title>
                     </Helmet>

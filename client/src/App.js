@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import jwt_decode from 'jwt-decode';
 import setAuthToken from './utils/setAuthToken';
@@ -9,7 +9,8 @@ import Navbar from './components/Navbar/navbar';
 import Footer from './components/Footer/footer';
 import Login from './containers/Form/Login/login';
 import SignUp from './containers/Form/SignUp/signup';
-import Main from './containers/main';
+import PrivateRoute from "./hoc/auth/PrivateRoute";
+import Chatter from './containers/chatter';
 import './App.css';
 
 // Check for token 
@@ -43,13 +44,15 @@ class App extends Component {
             {/* Navbar renderin here */}
             <Route path='/' exact render={() => <Navbar name='Sign Up' link='/sign-up' />} />
             <Route path='/sign-up' exact render={() => <Navbar name='Login' link='/' />} />
-            <Route path='/chatter' exact render={() => <Navbar name='Signout' link='/' />} />
+            <Switch>
+              <Route exact path='/chatter' render={() => <Navbar name='Signout' link='/' />} />
+            </Switch>
 
             {/* Main Content here */}
             <main className='container'>
               <Route path='/' exact component={Login} />
               <Route path='/sign-up' exact component={SignUp} />
-              <Route path='/chatter' exact component={Main} />
+              <Route exact path='/chatter' component={PrivateRoute(Chatter)} />
             </main>
 
             {/* Footer here - A static component */}

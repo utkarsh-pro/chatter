@@ -1,5 +1,6 @@
 import React from 'react';
-import Classes from './main.module.css';
+import { Helmet } from 'react-helmet';
+import Classes from './chatter.module.css';
 import Input from '../components/UI/Input/input';
 import Button from '../components/UI/Button/button';
 import { connect } from 'react-redux';
@@ -16,9 +17,9 @@ const privateChat = (sender, reciever, msg) => {
     socket.emit('private', { private: msg, sender, reciever });
 }
 
-class Main extends React.Component {
+class Chatter extends React.Component {
     componentDidMount() {
-        socket.on('heya', msg => {
+        socket.on('message', msg => {
             this.setState((state, props) => {
                 return { message: state.messageLog.push(msg) }
             });
@@ -32,6 +33,7 @@ class Main extends React.Component {
         searchField: '',
         friends: ['Friend1', 'Friend2', 'Friend1', 'Friend2', 'Friend1', 'Friend2']
     }
+
     press = (cnt, name) => {
         console.log(name);
         this.setState({ [name]: cnt });
@@ -50,6 +52,11 @@ class Main extends React.Component {
         ))
         return (
             <div className={Classes.wrapper}>
+                <Helmet>
+                    <title>Chatter: Welcome to chatter</title>
+                </Helmet>
+
+                {/* List of friends */}
                 <div className={Classes.list}>
                     <input
                         type='text'
@@ -60,11 +67,17 @@ class Main extends React.Component {
                         {this.state.friends.map((val, i) => (<Friend key={i}>{val}</Friend>))}
                     </div>
                 </div>
+
+                {/* View for messages */}
                 <div className={Classes.view}>
                     <div className={Classes.msgBlock}>
                         {messages}
                     </div>
+
+                    {/* Message box */}
                     <div className={Classes.msgBox}>
+                        <div className={Classes.nameField}>
+                        </div>
                         <Input
                             type='text'
                             name='message'
@@ -90,4 +103,4 @@ const mapStateToProps = state => ({
     errors: state.errors
 })
 
-export default connect(mapStateToProps, null)(Main);
+export default connect(mapStateToProps, null)(Chatter);

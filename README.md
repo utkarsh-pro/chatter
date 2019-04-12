@@ -8,8 +8,8 @@ Technologies used:
 4) Redux
 5) React Router (I used client side rendering as opposed to server side rendering as I aim to make it a progressive web app with certain heavy javascript functionality to be available in the offline mode).
 6) Node.js 
-7) Express.js (In future it might be replaced with hapi.js as I prefer it for apis, suggestions are most welcome)
+7) Express.js (In future it might be replaced with hapi.js but due to inexperience express is used, suggestions are most welcome)
 8) JWT for token based authentication as opposed to session based authentication.
 9) Passport.js(For validation of tokens though it wasn't required at thi stage but in future it is aimed to be used for oauth)
-10) Mongodb(ORM - Mongoose.js)
+10) Mongodb(ODM - Mongoose.js)
 11) Socket.io powers the chat interface

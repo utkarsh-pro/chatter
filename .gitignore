@@ -1,3 +1,4 @@
 /node_modules
 chat.js
 /client/node_modules
+/config/devepment_keys.js
