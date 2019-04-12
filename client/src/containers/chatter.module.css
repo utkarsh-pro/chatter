@@ -31,6 +31,7 @@
 }
 .msgBlock{
     padding: 1rem;
+    overflow-y: auto;
 }
 .msgBox{
     display: flex;

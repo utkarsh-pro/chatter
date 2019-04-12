@@ -8,6 +8,7 @@ const input = props => (
             type={props.type}
             className={Classes.Input}
             name={props.name}
+            disabled={props.active === false ? true : false}
             onChange={e => props.press ? props.press(e.target.value, props.name) : null}
         />
     </div>

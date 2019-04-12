@@ -4,7 +4,7 @@ const router = express.Router();
 // const bodyParser = require('body-parser');
 // const mongoose = require('mongoose');
 // const keys = require('../../config/keys');
-// const User = require('../../models/User');
+const User = require('../../models/User');
 // const app = express();
 // app.use(bodyParser.json());
 // app.use(bodyParser.urlencoded({ extended: false }));
@@ -15,6 +15,26 @@ const router = express.Router();
 // @access PRIVATE
 router.get('/test', passport.authenticate('jwt', { session: false }), (req, res) => {
     res.json({ msg: 'success' });
+});
+
+router.get('/', passport.authenticate('jwt', { session: false }), (req, res) => {
+    console.log(req.user);
+    User.findOne({ username: req.user.username }).then(res => console.log(res.friends)).catch(err => console.log(err));
+    res.send({ msg: 'success' });
+});
+
+router.post('/', passport.authenticate('jwt', { session: false }), (req, res) => {
+    console.log(req.body);
+    User.findOne({ username: req.body.username })
+        .then(res => {
+            const newFriend = req.body.friend;
+            const friends = { ...res.friends, friend: newFriend }
+            User.findOneAndUpdate({ username: res.username }, { friends })
+                .then(res => console.log(res))
+                .catch(err => console.log(err));
+        })
+        .catch(err => console.log(err));
+    res.send({ msg: 'success' });
 });
 
 // mongoose.connect(keys.mongoURI, { useNewUrlParser: true })

@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import { Helmet } from 'react-helmet';
 import Classes from './chatter.module.css';
 import Input from '../components/UI/Input/input';
@@ -10,20 +11,30 @@ import Friend from '../components/Friend/friend';
 
 const socket = io.connect('http://localhost:5000');
 
-const connectToSocket = (sender, reciever) => {
-    socket.emit('connected', { sender, reciever });
+// Initiate connection the socket
+const connectToSocket = sender => {
+    socket.emit('connected', sender);
 }
+// Send private messages
 const privateChat = (sender, reciever, msg) => {
     socket.emit('private', { private: msg, sender, reciever });
 }
 
 class Chatter extends React.Component {
     componentDidMount() {
+        // Making connection request to the server
+        connectToSocket(this.props.auth.user.username);
+
+        // Listening to private messages
         socket.on('message', msg => {
             this.setState((state, props) => {
                 return { message: state.messageLog.push(msg) }
             });
         });
+
+        // AJAX call to server to retrieve list of friends
+        axios.get('/api/chatter', { params: { username: this.props.auth.user } })
+            .then(res => console.log(res)).catch(err => console.log(err));
     }
 
     state = {
@@ -31,21 +42,36 @@ class Chatter extends React.Component {
         message: '',
         messageLog: ['Hello', 'Hi'],
         searchField: '',
-        friends: ['Friend1', 'Friend2', 'Friend1', 'Friend2', 'Friend1', 'Friend2']
+        friends: [{ name: 'Friend1', id: 'me' }, { name: 'Friend2', id: 'test2' }, { name: 'Friend3', id: 'utkarsh' }],
+        newFriend: ''
     }
 
+    //Set the name the reciever of the messages
+    setReciever = reciever => {
+        console.log(reciever);
+        this.setState({ reciever });;
+    }
+
+    // Add a new friend
+    newFriend = (e) => {
+        this.setState({ newFriend: e.target.value });
+        if (e.key === 'Enter') {
+            axios.post('/api/chatter', { friend: this.state.newFriend, username: this.props.auth.user.username })
+                .then(res => console.log(res))
+                .catch(err => console.log(err));
+        }
+    }
+
+    //Dont know what this function does
     press = (cnt, name) => {
-        console.log(name);
         this.setState({ [name]: cnt });
     }
-    // Initiate a session with a user
-    submit = e => {
-        connectToSocket(this.props.auth.user.username, this.state.reciever);
-    }
-    // Private messages
+
+    // Send private messages --------- DO NOT TOUCH !
     chat = e => {
         privateChat(this.props.auth.user.username, this.state.reciever, this.state.message);
     }
+
     render() {
         const messages = this.state.messageLog.map((val, i) => (
             <Message key={i}>{val}</Message>
@@ -62,9 +88,15 @@ class Chatter extends React.Component {
                         type='text'
                         name='reciever'
                         className={Classes.addFriends}
-                        placeholder='Search friends' />
+                        placeholder='Add username of your friend'
+                        onChange={this.newFriend}
+                        onKeyPress={this.newFriend} />
                     <div className={Classes.friends}>
-                        {this.state.friends.map((val, i) => (<Friend key={i}>{val}</Friend>))}
+                        {this.state.friends.map((val) => (
+                            <Friend key={val.id} onClick={this.setReciever} id={val.id}>
+                                {val.name}
+                            </Friend>)
+                        )}
                     </div>
                 </div>
 
@@ -85,6 +117,7 @@ class Chatter extends React.Component {
                             display='inline-block'
                             width='75%'
                             marginRight='1rem'
+                            active={this.state.reciever ? true : false}
                             press={this.press} />
                         <Button
                             type='success'

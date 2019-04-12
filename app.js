@@ -55,8 +55,9 @@ const io = require('socket.io')(server);
 const users = [];
 
 io.on('connection', (socket) => {
-    socket.on('connected', data => {
-        users.push({ sender: data.sender, id: socket.id });
+    socket.on('connected', sender => {
+        console.log('connected', socket.id);
+        users.push({ sender, id: socket.id });
     })
     socket.on('private', (msg) => {
         let socketId;
@@ -68,6 +69,7 @@ io.on('connection', (socket) => {
         console.log(msg.private);
         io.to(`${socketId}`).emit('message', msg.private);
     });
+    socket.on('disconnect', () => console.log('Disconnected', socket.id));
 });
 
 // ***************************************************************************************
