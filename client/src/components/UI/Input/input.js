@@ -6,10 +6,11 @@ const input = props => (
         <label htmlFor={props.name} className={Classes.for}>{props.label}</label>
         <input
             type={props.type}
+            value={props.message}
             className={Classes.Input}
             name={props.name}
             disabled={props.active === false ? true : false}
-            onChange={e => props.press ? props.press(e.target.value, props.name) : null}
+            onChange={e => props.press ? props.press(e, props.name) : null}
         />
     </div>
 );

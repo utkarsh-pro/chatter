@@ -32,39 +32,51 @@ class Chatter extends React.Component {
             });
         });
 
-        // AJAX call to server to retrieve list of friends
-        axios.get('/api/chatter', { params: { username: this.props.auth.user } })
-            .then(res => console.log(res)).catch(err => console.log(err));
+        // AJAX call to server to retrieve list of friends and messages
+        this.recieveFriends();
+    }
+
+    // Recieve list of friends from the server -- A protected route
+    recieveFriends = () => {
+        axios.get('/api/chatter/friends', { params: { username: this.props.auth.user } })
+            .then(res => this.setState({
+                friends: Object.keys(res.data).map(key => (
+                    [key, res.data[key]]
+                ))
+            }))
+            .catch(err => console.log(err));
     }
 
     state = {
         reciever: '',
         message: '',
-        messageLog: ['Hello', 'Hi'],
+        messageLog: [],
         searchField: '',
-        friends: [{ name: 'Friend1', id: 'me' }, { name: 'Friend2', id: 'test2' }, { name: 'Friend3', id: 'utkarsh' }],
-        newFriend: ''
+        friends: [],
+        newFriend: '',
     }
 
     //Set the name the reciever of the messages
     setReciever = reciever => {
         console.log(reciever);
-        this.setState({ reciever });;
+        this.setState({ reciever });
     }
 
     // Add a new friend
     newFriend = (e) => {
         this.setState({ newFriend: e.target.value });
         if (e.key === 'Enter') {
-            axios.post('/api/chatter', { friend: this.state.newFriend, username: this.props.auth.user.username })
-                .then(res => console.log(res))
+            axios.post('/api/chatter/friends',
+                { friend: this.state.newFriend, username: this.props.auth.user.username })
+                .then(res => { console.log(res); this.recieveFriends(); })
                 .catch(err => console.log(err));
+            e.target.value = ''; // Clears the input field
         }
     }
 
-    //Dont know what this function does
-    press = (cnt, name) => {
-        this.setState({ [name]: cnt });
+    //Dont know what this function does -- Basically I forgot
+    press = (e, name) => {
+        this.setState({ [name]: e.target.value });
     }
 
     // Send private messages --------- DO NOT TOUCH !
@@ -93,8 +105,8 @@ class Chatter extends React.Component {
                         onKeyPress={this.newFriend} />
                     <div className={Classes.friends}>
                         {this.state.friends.map((val) => (
-                            <Friend key={val.id} onClick={this.setReciever} id={val.id}>
-                                {val.name}
+                            <Friend key={val[0]} onClick={this.setReciever} id={val[0]}>
+                                {val[0]}
                             </Friend>)
                         )}
                     </div>
@@ -102,18 +114,20 @@ class Chatter extends React.Component {
 
                 {/* View for messages */}
                 <div className={Classes.view}>
+                    <div className={Classes.nameField}>
+                        {this.state.reciever}
+                    </div>
                     <div className={Classes.msgBlock}>
                         {messages}
                     </div>
 
                     {/* Message box */}
                     <div className={Classes.msgBox}>
-                        <div className={Classes.nameField}>
-                        </div>
                         <Input
                             type='text'
                             name='message'
                             label=''
+                            value={this.state.message}
                             display='inline-block'
                             width='75%'
                             marginRight='1rem'

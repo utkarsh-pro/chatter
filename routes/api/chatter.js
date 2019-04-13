@@ -1,14 +1,7 @@
 const express = require('express');
 const passport = require('passport');
 const router = express.Router();
-// const bodyParser = require('body-parser');
-// const mongoose = require('mongoose');
-// const keys = require('../../config/keys');
 const User = require('../../models/User');
-// const app = express();
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: false }));
-
 
 // @route GET /api/chatter/test
 // @desc Testing the protected route
@@ -17,48 +10,41 @@ router.get('/test', passport.authenticate('jwt', { session: false }), (req, res)
     res.json({ msg: 'success' });
 });
 
-router.get('/', passport.authenticate('jwt', { session: false }), (req, res) => {
+// @route GET /api/chatter/friends
+// @desc Send friends list
+// @access PRIVATE
+router.get('/friends', passport.authenticate('jwt', { session: false }), (req, res) => {
     console.log(req.user);
-    User.findOne({ username: req.user.username }).then(res => console.log(res.friends)).catch(err => console.log(err));
-    res.send({ msg: 'success' });
+    User.findOne({ username: req.user.username })
+        .then(response => res.send(response.friends))
 });
 
-router.post('/', passport.authenticate('jwt', { session: false }), (req, res) => {
+// @route POST /api/chatter/friends
+// @desc Testing the protected route
+// @access PRIVATE
+router.post('/friends', passport.authenticate('jwt', { session: false }), (req, res) => {
     console.log(req.body);
     User.findOne({ username: req.body.username })
-        .then(res => {
+        .then(response => {
             const newFriend = req.body.friend;
-            const friends = { ...res.friends, friend: newFriend }
-            User.findOneAndUpdate({ username: res.username }, { friends })
-                .then(res => console.log(res))
-                .catch(err => console.log(err));
+            if (response.friends && response.friends.size > 0) {
+                if (!response.friends.get(newFriend) ? true : false) {
+                    response.friends.set(newFriend, []);
+                    response.save()
+                        .then(() => res.send({ msg: 'success' }))
+                        .catch(err => console.log(err));
+                } else {
+                    res.send({ msg: 'Friend already existed' });
+                }
+            }
+            else {
+                const friends = { [newFriend]: [] };
+                User.findOneAndUpdate({ username: response.username }, { friends })
+                    .then(() => res.send(friends))
+                    .catch(err => res.status(500).send({ msg: err }));
+            }
         })
         .catch(err => console.log(err));
-    res.send({ msg: 'success' });
 });
 
-// mongoose.connect(keys.mongoURI, { useNewUrlParser: true })
-//     .then(() => console.log('Successfully connected to the database'))
-//     .catch(err => console.log(err));
-
-// app.post('/test2', (req, res) => {
-//     console.log(req.body);
-//     const newUser = new User({
-//         username: req.body.username,
-//         password: req.body.password,
-//         friends: {
-//             friend1: [1, 3, 5],
-//             friend2: [1, 2, 3]
-//         }
-//     });
-//     newUser.save()
-//         .then(user => res.json(user))
-//         .catch(err => console.log(err));
-// });
-
-// User.findOneAndUpdate({ username: 'test2' }, { friends: { friend1: [1, 2, 3, 4, 200, 100000] } })
-//     .then(user => console.log('success', user))
-//     .catch(err => console.log(err));
-
-// app.listen(6000, () => console.log('running!'));
 module.exports = router;

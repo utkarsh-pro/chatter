@@ -18,7 +18,7 @@
     grid-template-rows: 0.6fr 9.4fr;
 }
 .view{
-    grid-template-rows: 9.2fr 0.8fr;
+    grid-template-rows: 0.8fr 8.4fr 0.8fr;
     background-color: #F8EFBA;
 }
 .addFriends{
@@ -28,6 +28,11 @@
     border-radius: 0.3rem;
     outline: none;
     margin-bottom: 1rem;
+}
+.nameField{
+    background-color: #01a3a4;
+    border-radius: 0 0.5rem 0 0;
+    color: white;
 }
 .msgBlock{
     padding: 1rem;
