@@ -46,11 +46,11 @@ class SignUp extends React.Component {
         }
     }
 
-    save = (text, type) => {
+    save = (e, type) => {
         // Callback function will ensure that
         // function call is made only after
         // setState has finished updating the state
-        this.setState({ [type]: text }, () => {
+        this.setState({ [type]: e.target.value }, () => {
             if (type === 'password2')
                 this.inputCheck();
         });

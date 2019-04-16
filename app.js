@@ -66,8 +66,8 @@ io.on('connection', (socket) => {
                 socketId = user.id;
             }
         });
-        console.log(msg.private);
-        io.to(`${socketId}`).emit('message', msg.private);
+        console.log(msg);
+        io.to(`${socketId}`).emit('message', msg);
     });
     socket.on('disconnect', () => console.log('Disconnected', socket.id));
 });

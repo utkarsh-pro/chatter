@@ -17,7 +17,7 @@ const connectToSocket = sender => {
 }
 // Send private messages
 const privateChat = (sender, reciever, msg) => {
-    socket.emit('private', { private: msg, sender, reciever });
+    socket.emit('private', { message: msg, sender, reciever });
 }
 
 class Chatter extends React.Component {
@@ -27,8 +27,9 @@ class Chatter extends React.Component {
 
         // Listening to private messages
         socket.on('message', msg => {
-            this.setState((state, props) => {
-                return { message: state.messageLog.push(msg) }
+            this.setState((prevState, props) => {
+                const target = this.state.friends[msg.sender];
+                return { [target]: prevState.friends[msg.sender].push(msg) }
             });
         });
 
@@ -39,11 +40,7 @@ class Chatter extends React.Component {
     // Recieve list of friends from the server -- A protected route
     recieveFriends = () => {
         axios.get('/api/chatter/friends', { params: { username: this.props.auth.user } })
-            .then(res => this.setState({
-                friends: Object.keys(res.data).map(key => (
-                    [key, res.data[key]]
-                ))
-            }))
+            .then(res => this.setState({ friends: res.data }))
             .catch(err => console.log(err));
     }
 
@@ -52,13 +49,14 @@ class Chatter extends React.Component {
         message: '',
         messageLog: [],
         searchField: '',
-        friends: [],
-        newFriend: '',
+        friends: {},
+        newFriend: ''
     }
+
+    textInput = React.createRef();
 
     //Set the name the reciever of the messages
     setReciever = reciever => {
-        console.log(reciever);
         this.setState({ reciever });
     }
 
@@ -74,7 +72,6 @@ class Chatter extends React.Component {
         }
     }
 
-    //Dont know what this function does -- Basically I forgot
     press = (e, name) => {
         this.setState({ [name]: e.target.value });
     }
@@ -82,12 +79,20 @@ class Chatter extends React.Component {
     // Send private messages --------- DO NOT TOUCH !
     chat = e => {
         privateChat(this.props.auth.user.username, this.state.reciever, this.state.message);
+        this.setState((prevState, props) => {
+            const target = this.state.friends[this.state.reciever];
+            return {
+                [target]: prevState.friends[prevState.reciever].push({
+                    sender: this.props.auth.user.username,
+                    reciever: prevState.reciever,
+                    message: prevState.message
+                })
+            }
+        });
+        this.textInput.current.value = '';
     }
 
     render() {
-        const messages = this.state.messageLog.map((val, i) => (
-            <Message key={i}>{val}</Message>
-        ))
         return (
             <div className={Classes.wrapper}>
                 <Helmet>
@@ -104,9 +109,9 @@ class Chatter extends React.Component {
                         onChange={this.newFriend}
                         onKeyPress={this.newFriend} />
                     <div className={Classes.friends}>
-                        {this.state.friends.map((val) => (
-                            <Friend key={val[0]} onClick={this.setReciever} id={val[0]}>
-                                {val[0]}
+                        {Object.keys(this.state.friends).map((val, i) => (
+                            <Friend key={i} onClick={this.setReciever} id={val}>
+                                {val}
                             </Friend>)
                         )}
                     </div>
@@ -118,12 +123,18 @@ class Chatter extends React.Component {
                         {this.state.reciever}
                     </div>
                     <div className={Classes.msgBlock}>
-                        {messages}
+                        {
+                            this.state.friends[this.state.reciever] ?
+                                this.state.friends[this.state.reciever].map((val, i) => (
+                                    <Message key={i}>{`${val.sender}: ${val.message}`}</Message>
+                                )) : null
+                        }
                     </div>
 
                     {/* Message box */}
                     <div className={Classes.msgBox}>
                         <Input
+                            refs={this.textInput}
                             type='text'
                             name='message'
                             label=''

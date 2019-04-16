@@ -5,6 +5,7 @@ const input = props => (
     <div style={{ display: props.display, width: props.width, marginRight: props.marginRight }}>
         <label htmlFor={props.name} className={Classes.for}>{props.label}</label>
         <input
+            ref={props.refs ? props.refs : null}
             type={props.type}
             value={props.message}
             className={Classes.Input}
