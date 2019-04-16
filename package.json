@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon app.js",
+    "start": "pm2 start app.js -i -1",
     "server": "npm run build --prefix=client && pm2 start app.js -i -1"
   },
   "keywords": [],
