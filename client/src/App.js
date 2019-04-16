@@ -23,7 +23,6 @@ if (localStorage.getItem('jwt')) {
 
   // Set user and isAuthenticated
   store.dispatch(setCurrentUser(decoded));
-
   // Check for expired token
   const currentTime = Date.now();
   if (currentTime < decoded.exp) {

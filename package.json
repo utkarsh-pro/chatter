@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node app.js",
-    "server": "npm run build --prefix=client && nodemon app.js"
+    "start": "nodemon app.js",
+    "server": "npm run build --prefix=client && pm2 start app.js -i -1"
   },
   "keywords": [],
   "author": "",

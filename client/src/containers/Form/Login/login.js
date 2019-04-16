@@ -40,8 +40,8 @@ class Login extends React.Component {
     }
 
     // Saves form info into the state
-    save = (text, type) => {
-        this.setState({ [type]: text });
+    save = (e, type) => {
+        this.setState({ [type]: e.target.value });
     }
 
     render() {

@@ -14,6 +14,7 @@ router.post('/', (req, res) => {
     const password = req.body.password;
     console.log('hello');
     // Check for user
+    console.log(req.body);
     User.findOne({ username })
         .then(user => {
             if (!user) {
@@ -44,6 +45,7 @@ router.post('/', (req, res) => {
                 })
                 .catch(error => console.log(error));
         })
+        .catch(err => { console.log('Some error has been encountered error 500', err); res.send('Error!!') })
 });
 
 module.exports = router;
