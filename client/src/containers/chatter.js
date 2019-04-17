@@ -53,7 +53,9 @@ class Chatter extends React.Component {
         newFriend: ''
     }
 
+    // Refs
     textInput = React.createRef();
+    messageEnd = React.createRef();
 
     //Set the name the reciever of the messages
     setReciever = reciever => {
@@ -126,7 +128,11 @@ class Chatter extends React.Component {
                         {
                             this.state.friends[this.state.reciever] ?
                                 this.state.friends[this.state.reciever].map((val, i) => (
-                                    <Message key={i}>{`${val.sender}: ${val.message}`}</Message>
+                                    <Message key={i}
+                                        by={val.sender === this.props.auth.user.username ? 1 : 0}
+                                        refs={this.messageEnd}>
+                                        {val.message}
+                                    </Message>
                                 )) : null
                         }
                     </div>

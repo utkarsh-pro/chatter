@@ -1,6 +1,22 @@
 .msg{
-    background-color: white;
     margin: 0.5rem 0;
-    padding: 0.8rem;
+    width: 100%;
+}
+.msg_out{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+.msg_in{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+.msg_out div, .msg_in div {
+    width: max-content;
+    background-color: white;
+    padding: 0.4rem 0.8rem;
     border-radius: 0.5rem;
+    max-width: 30rem;
+    overflow-wrap: break-word;
 }
