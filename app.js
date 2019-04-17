@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const Cors = require('cors');
 const bodyParser = require('body-parser');
 const passport = require('passport');
+const helmet = require('helmet');
 const keys = require('./config/keys');
 const signUp = require('./routes/api/signup');
 const login = require('./routes/api/login');
@@ -20,6 +21,7 @@ const PORT = process.env.PORT || 5000;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(passport.initialize()); // Initialises passport.js services
+app.use(helmet()); // Use helmet for additional security
 
 //===================================================================
 // DB config
