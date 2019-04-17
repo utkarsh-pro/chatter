@@ -7,11 +7,19 @@ const Cors = require('cors');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 const helmet = require('helmet');
+const RateLimit = require('express-rate-limit');
 const keys = require('./config/keys');
 const signUp = require('./routes/api/signup');
 const login = require('./routes/api/login');
 const chatter = require('./routes/api/chatter');
 const User = require('./models/User');
+
+// Config rate limiter ==============================================
+const rateLimit = new RateLimit({
+    windowMs: 10 * 60 * 1000, // 10 mins
+    max: 100, // Limit number of requests per IP to 100
+    delayMs: 0 // No delay
+});
 
 // ==================================================================
 // Express config
@@ -22,7 +30,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(passport.initialize()); // Initialises passport.js services
 app.use(helmet()); // Use helmet for additional security
-
+app.use(rateLimit); // Limit rate
 //===================================================================
 // DB config
 mongoose.connect(keys.mongoURI, { useNewUrlParser: true, useCreateIndex: true })
