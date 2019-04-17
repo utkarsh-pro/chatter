@@ -122,7 +122,11 @@ class Chatter extends React.Component {
                 {/* View for messages */}
                 <div className={Classes.view}>
                     <div className={Classes.nameField}>
-                        {this.state.reciever}
+                        {
+                            this.state.reciever ?
+                                `You are talking to "${this.state.reciever}"` :
+                                `Start talking to friends right now! It's elegant!`
+                        }
                     </div>
                     <div className={Classes.msgBlock}>
                         {

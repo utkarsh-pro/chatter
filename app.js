@@ -10,6 +10,7 @@ const keys = require('./config/keys');
 const signUp = require('./routes/api/signup');
 const login = require('./routes/api/login');
 const chatter = require('./routes/api/chatter');
+const User = require('./models/User');
 
 // ==================================================================
 // Express config
@@ -43,7 +44,9 @@ app.get('/checkToken', passport.authenticate('jwt', { session: false }), (req, r
     res.sendStatus(200);
 });
 
-// Serving static files from the server due to client side routing I enabled in react
+// @route GET /*
+// @desc serve static files
+// @access PUBLIC
 app.get('/*', function (req, res) {
     res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
 });
@@ -67,7 +70,31 @@ io.on('connection', (socket) => {
             }
         });
         console.log(msg);
+        // Send message to the user in real time
         io.to(`${socketId}`).emit('message', msg);
+        // Store message into database for later retrieval --Sender
+        User.findOne({ username: msg.sender })
+            .then(res => {
+                const chatLog = res.friends.get(msg.reciever);
+                chatLog.push(msg);
+                res.friends.set(msg.reciever, chatLog);
+                res.save()
+                    .then(res => console.log(res))
+                    .catch(err => console.log(err));
+            })
+            .catch(err => console.log(err));
+        // Store message into database for later retrieval --Reciever
+        User.findOne({ username: msg.reciever })
+            .then(res => {
+                const chatLog = res.friends.get(msg.sender);
+                chatLog.push(msg);
+                res.friends.set(msg.sender, chatLog);
+                res.save()
+                    .then(res => console.log(res))
+                    .catch(err => console.log(err));
+            })
+            .catch(err => console.log(err));
+
     });
     socket.on('disconnect', () => console.log('Disconnected', socket.id));
 });

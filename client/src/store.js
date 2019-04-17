@@ -10,6 +10,7 @@ const store = createStore(
     initalState,
     compose(
         applyMiddleware(...middleware),
+        // REDUX DEVEOPER TOOL - TO BE ENABLED ONLY IN DEVELOPMENT MODE
         //window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
     )
 );

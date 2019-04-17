@@ -5,7 +5,7 @@
     margin-top: 1rem;
     display: grid;
     grid-template-columns: 1fr 3fr;
-    border: 1px solid #000000;
+    box-shadow: 0 0 0.8rem 0.4rem rgba(0, 0, 0, 0.5);
     border-radius: 0.5rem;
 }
 .list, .view{
@@ -20,6 +20,7 @@
 .view{
     grid-template-rows: 0.8fr 8.4fr 0.8fr;
     background-color: #F8EFBA;
+    border-radius: 0.5rem;
 }
 .addFriends{
     width: 100%;
@@ -33,6 +34,10 @@
     background-color: #01a3a4;
     border-radius: 0 0.5rem 0 0;
     color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-transform: uppercase;
 }
 .msgBlock{
     padding: 1rem;

@@ -34,7 +34,7 @@ router.post('/friends', passport.authenticate('jwt', { session: false }), (req, 
                         .then(() => res.send({ msg: 'success' }))
                         .catch(err => console.log(err));
                 } else {
-                    res.send({ msg: 'Friend already existed' });
+                    res.send({ msg: 'Friend already exist' });
                 }
             }
             else {

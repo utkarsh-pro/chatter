@@ -2,6 +2,7 @@
     height: 100%;
     display: grid;
     grid-template-rows: 3.2rem 1fr 2rem;
+    font-family: 'Roboto', sans-serif;
 }
 
 .container{
