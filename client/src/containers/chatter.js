@@ -9,7 +9,7 @@ import io from 'socket.io-client';
 import Message from '../components/Message/message';
 import Friend from '../components/Friend/friend';
 
-const socket = io.connect('http://localhost:5000');
+const socket = io.connect('/');
 
 // Initiate connection the socket
 const connectToSocket = sender => {
@@ -80,18 +80,20 @@ class Chatter extends React.Component {
 
     // Send private messages --------- DO NOT TOUCH !
     chat = e => {
-        privateChat(this.props.auth.user.username, this.state.reciever, this.state.message);
-        this.setState((prevState, props) => {
-            const target = this.state.friends[this.state.reciever];
-            return {
-                [target]: prevState.friends[prevState.reciever].push({
-                    sender: this.props.auth.user.username,
-                    reciever: prevState.reciever,
-                    message: prevState.message
-                })
-            }
-        });
-        this.textInput.current.value = '';
+        if (e.target.value) {
+            privateChat(this.props.auth.user.username, this.state.reciever, this.state.message);
+            this.setState((prevState, props) => {
+                const target = this.state.friends[this.state.reciever];
+                return {
+                    [target]: prevState.friends[prevState.reciever].push({
+                        sender: this.props.auth.user.username,
+                        reciever: prevState.reciever,
+                        message: prevState.message
+                    })
+                }
+            });
+            this.textInput.current.value = '';
+        }
     }
 
     render() {
