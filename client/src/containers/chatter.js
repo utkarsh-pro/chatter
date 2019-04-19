@@ -50,7 +50,8 @@ class Chatter extends React.Component {
         messageLog: [],
         searchField: '',
         friends: {},
-        newFriend: ''
+        newFriend: '',
+        showChatsMob: false
     }
 
     // Refs
@@ -60,6 +61,9 @@ class Chatter extends React.Component {
     //Set the name the reciever of the messages
     setReciever = reciever => {
         this.setState({ reciever });
+        if (window.screen.width <= 800)
+            // Show messages on mobile view
+            this.setState({ showChatsMob: true })
     }
 
     // Add a new friend
@@ -97,6 +101,11 @@ class Chatter extends React.Component {
         }
     }
 
+    // Back - button in mobile view
+    show = () => {
+        this.setState({ showChatsMob: false });
+    }
+
     render() {
         return (
             <div className={Classes.wrapper}>
@@ -105,7 +114,8 @@ class Chatter extends React.Component {
                 </Helmet>
 
                 {/* List of friends */}
-                <div className={Classes.list}>
+                <div className={Classes.list}
+                    style={!this.state.showChatsMob ? { display: 'inherit' } : { display: 'none' }}>
                     <input
                         type='text'
                         name='reciever'
@@ -123,8 +133,18 @@ class Chatter extends React.Component {
                 </div>
 
                 {/* View for messages */}
-                <div className={Classes.view}>
+                <div className={Classes.view}
+                    style={this.state.showChatsMob ? { display: 'inherit' } : null}>
                     <div className={Classes.nameField}>
+                        <div>
+                            <button className={Classes.chatter_mob}
+                                onClick={this.show}
+                                style={{
+                                    border: 'none',
+                                    outline: 'none',
+                                    backgroundColor: 'transparent',
+                                    color: 'white'
+                                }}>Back</button></div>
                         {
                             this.state.reciever ?
                                 `You are talking to "${this.state.reciever}"` :
@@ -154,7 +174,7 @@ class Chatter extends React.Component {
                             value={this.state.message}
                             display='inline-block'
                             width='75%'
-                            marginRight='1rem'
+                            marginRight='0.8rem'
                             active={this.state.reciever ? true : false}
                             press={this.press} />
                         <Button

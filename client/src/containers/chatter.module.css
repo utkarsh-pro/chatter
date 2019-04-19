@@ -38,9 +38,11 @@
     border-radius: 0 0.5rem 0 0;
     color: white;
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
+    padding: 0.5rem;
     align-items: center;
     text-transform: uppercase;
+    text-align: center;
 }
 .msgBlock{
     padding: 1rem;
@@ -50,4 +52,31 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 0 1rem;
+}
+.chatter_mob{
+    display: none;
+}
+.display{
+    display: inherit;
+}
+@media screen and (max-width: 800px){
+    .chatter_mob{
+        display: inherit;
+    }
+    .list, .view{
+        height: 90vh;
+    }
+    .view{
+        display: none;
+    }
+    .wrapper{
+        grid-template-columns: 1fr;
+        margin-top: 0;
+        box-shadow: none;
+        border-radius: 0;
+    }
+    .nameField{
+        border-radius: 0;
+    }
 }
