@@ -30,7 +30,7 @@ class SignUp extends React.Component {
 
     submit = e => {
         e.preventDefault();
-        if (this.state.match)
+        if (this.state.match && this.state.username)
             this.props.registerUser({
                 username: this.state.username,
                 password: this.state.password
@@ -63,6 +63,7 @@ class SignUp extends React.Component {
                     <Helmet>
                         <title>SignUp</title>
                     </Helmet>
+                    {this.props.errors.errors ? <div className={Classes.flash}>{this.props.errors.errors}</div> : null}
                     {this.state.match ? null :
                         <div className={Classes.flash}>Passwords don't match</div>
                     }

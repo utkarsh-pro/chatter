@@ -26,7 +26,7 @@ class Login extends React.Component {
             this.props.history.push('/chatter');
         }
 
-        if (nextProps.errors) {
+        else if (nextProps.errors) {
             console.log(nextProps.errors);
         }
     }
@@ -54,8 +54,9 @@ class Login extends React.Component {
                 </div>
                 <Form height='30rem' width='80%' >
                     <Helmet>
-                        <title>Login</title>
+                        <title>Chatter: Login</title>
                     </Helmet>
+                    {this.props.errors.error ? <div className={Classes.flash}>{this.props.errors.error}</div> : null}
                     <h2>Log In</h2>
                     <div
                         style={{ fontSize: '1rem', margin: '-0.5rem 0 1.5rem 0' }}>
