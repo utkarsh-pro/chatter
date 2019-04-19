@@ -80,7 +80,7 @@ class Chatter extends React.Component {
 
     // Send private messages --------- DO NOT TOUCH !
     chat = e => {
-        if (e.target.value) {
+        if (this.state.message) {
             privateChat(this.props.auth.user.username, this.state.reciever, this.state.message);
             this.setState((prevState, props) => {
                 const target = this.state.friends[this.state.reciever];
@@ -93,6 +93,7 @@ class Chatter extends React.Component {
                 }
             });
             this.textInput.current.value = '';
+            this.setState({ message: '' });
         }
     }
 
