@@ -4,9 +4,13 @@
     margin: 1rem 0;
     box-sizing: border-box;
     font-size: 1.1rem;
-    border: 1px solid #2f3640;
+    border: 1px solid #ccc;
     border-radius: 0.3rem;
     outline: none;
+}
+.Input:focus { 
+    border-color: #9ecaed;
+    box-shadow: 0 0 10px #9ecaed;
 }
 .for{
     font-size: 1.1rem;

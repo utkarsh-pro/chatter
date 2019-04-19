@@ -2,6 +2,7 @@ import React from "react";
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logoutUser } from '../../actions/authActions';
+import Links from './links';
 import Classes from './navbar.module.css';
 
 const navbar = props => {
@@ -13,9 +14,9 @@ const navbar = props => {
     return (
         <nav className={Classes.navbar}>
             <div className={Classes.navItems}>
-                <div><Link to="/">Brand</Link></div>
+                <div><Link to="/">Chatter</Link></div>
                 <div className={Classes.div}>
-                    {!isAuthenticated ? <div><Link to={props.link}>{props.name}</Link></div> :
+                    {!isAuthenticated ? <Links to={props.link}>{props.name}</Links> :
                         <button
                             onClick={onLogoutClick}
                             style={{
@@ -24,9 +25,10 @@ const navbar = props => {
                                 color: 'inherit',
                                 border: 'none',
                                 fontSize: '1.1rem',
-                                cursor: 'pointer'
+                                cursor: 'pointer',
+                                outline: 'none'
                             }}>
-                            Signout
+                            Logout
                         </button>
                     }
                 </div>

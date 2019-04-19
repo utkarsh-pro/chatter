@@ -158,7 +158,7 @@ class Chatter extends React.Component {
                             press={this.press} />
                         <Button
                             type='success'
-                            name='Send Message'
+                            name='Sends'
                             display='inline'
                             click={this.chat} />
                     </div>

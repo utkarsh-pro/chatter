@@ -1,5 +1,4 @@
 const express = require('express');
-const passport = require('passport');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const secret = require('../../config/keys').secretOrKey;

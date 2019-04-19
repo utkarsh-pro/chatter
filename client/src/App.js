@@ -11,6 +11,7 @@ import Login from './containers/Form/Login/login';
 import SignUp from './containers/Form/SignUp/signup';
 import PrivateRoute from "./hoc/auth/PrivateRoute";
 import Chatter from './containers/chatter';
+import NotFound404 from './components/404/404';
 import './App.css';
 
 // Check for token 
@@ -41,17 +42,20 @@ class App extends Component {
           <div className="App">
 
             {/* Navbar renderin here */}
-            <Route path='/' exact render={() => <Navbar name='Sign Up' link='/sign-up' />} />
-            <Route path='/sign-up' exact render={() => <Navbar name='Login' link='/' />} />
             <Switch>
+              <Route path='/' exact render={() => <Navbar name='Sign Up' link='/sign-up' />} />
+              <Route path='/sign-up' exact render={() => <Navbar name='Login' link='/' />} />
               <Route exact path='/chatter' render={() => <Navbar name='Signout' link='/' />} />
+              <Route path='/*' exact render={() => <Navbar name='Login' link='/' />} />
             </Switch>
-
             {/* Main Content here */}
             <main className='container'>
-              <Route path='/' exact component={Login} />
-              <Route path='/sign-up' exact component={SignUp} />
-              <Route exact path='/chatter' component={PrivateRoute(Chatter)} />
+              <Switch>
+                <Route path='/' exact component={Login} />
+                <Route path='/sign-up' exact component={SignUp} />
+                <Route exact path='/chatter' component={PrivateRoute(Chatter)} />
+                <Route path='/*' exact component={NotFound404} />
+              </Switch>
             </main>
 
             {/* Footer here - A static component */}

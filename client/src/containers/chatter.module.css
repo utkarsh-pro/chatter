@@ -14,7 +14,6 @@
 }
 .list{
     padding: 1rem;
-    border-right: 1px solid black;
     grid-template-rows: 0.6fr 9.4fr;
 }
 .view{
@@ -25,10 +24,14 @@
 .addFriends{
     width: 100%;
     padding: 0.5rem;
-    border: 1px solid black;
+    border: 1px solid #ccc;
     border-radius: 0.3rem;
     outline: none;
     margin-bottom: 1rem;
+}
+.addFriends:focus { 
+    border-color: #9ecaed;
+    box-shadow: 0 0 10px #9ecaed;
 }
 .nameField{
     background-color: #01a3a4;
