@@ -13,4 +13,7 @@
     .container{
         padding: 0;
     }
+    .App{
+        grid-template-rows: 3.2rem 1fr;
+    }
 }

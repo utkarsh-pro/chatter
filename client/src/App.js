@@ -59,7 +59,7 @@ class App extends PureComponent {
             </main>
 
             {/* Footer here - A static component */}
-            <Footer />
+            {window.screen.width > 800 ? <Footer /> : null}
           </div>
         </BrowserRouter>
       </Provider>
