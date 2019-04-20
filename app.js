@@ -110,4 +110,4 @@ io.on('connection', (socket) => {
 });
 
 // ***************************************************************************************
-server.listen(PORT, () => console.log("Server listening on port", PORT));
+server.listen(PORT, process.env.IP, () => console.log("Server listening on port", PORT));
