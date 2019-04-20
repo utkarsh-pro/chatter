@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import jwt_decode from 'jwt-decode';
@@ -34,7 +34,7 @@ if (localStorage.getItem('jwt')) {
     window.location.href = '/';
   }
 }
-class App extends Component {
+class App extends PureComponent {
   render() {
     return (
       <Provider store={store}>

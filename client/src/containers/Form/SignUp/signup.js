@@ -25,7 +25,7 @@ class SignUp extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.errors)
-            console.log('OH MY GOD!!')
+            console.log(nextProps.errors);
     }
 
     submit = e => {
@@ -59,7 +59,7 @@ class SignUp extends React.Component {
     render() {
         return (
             <div className={Classes.placeForm}>
-                <Form height='38rem' width='80vw' >
+                <Form height='90%' width='80vw' >
                     <Helmet>
                         <title>SignUp</title>
                     </Helmet>
