@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npm run build --prefix=client && nodemon app.js",
+    "start": "npm run build --prefix=client && node app.js",
     "server": "nodemon app.js"
   },
   "keywords": [],
