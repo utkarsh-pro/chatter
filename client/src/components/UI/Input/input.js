@@ -10,7 +10,7 @@ const input = props => (
                 value={props.message}
                 className={Classes.Input}
                 name={props.name}
-
+                autoComplete='off'
                 disabled={props.active === false ? true : false}
                 onChange={e => props.press ? props.press(e, props.name) : null}
             />

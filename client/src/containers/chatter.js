@@ -37,6 +37,11 @@ class Chatter extends React.Component {
         this.recieveFriends();
     }
 
+    componentDidUpdate() {
+        // Scrolls to the bottom
+        this.messageEnd.current.scrollIntoView();
+    }
+
     // Recieve list of friends from the server -- A protected route
     recieveFriends = () => {
         axios.get('/api/chatter/friends', { params: { username: this.props.auth.user } })
@@ -162,6 +167,7 @@ class Chatter extends React.Component {
                                     </Message>
                                 )) : null
                         }
+                        <div ref={this.messageEnd}></div>
                     </div>
 
                     {/* Message box */}

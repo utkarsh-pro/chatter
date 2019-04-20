@@ -38,7 +38,7 @@
     border-radius: 0 0.5rem 0 0;
     color: white;
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     padding: 0.5rem;
     align-items: center;
     text-transform: uppercase;
@@ -78,5 +78,6 @@
     }
     .nameField{
         border-radius: 0;
+        justify-content: space-around;
     }
 }
