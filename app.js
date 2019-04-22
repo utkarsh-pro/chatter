@@ -8,6 +8,7 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 const helmet = require('helmet');
 const RateLimit = require('express-rate-limit');
+const Redis = require('ioredis');
 const keys = require('./config/keys');
 const signUp = require('./routes/api/signup');
 const login = require('./routes/api/login');
@@ -33,9 +34,13 @@ app.use(helmet()); // Use helmet for additional security
 app.use(rateLimit); // Limit rate
 //===================================================================
 // DB config
+// MongoDB
 mongoose.connect(keys.mongoURI, { useNewUrlParser: true, useCreateIndex: true })
     .then(() => console.log('Successfully connected to the database'))
     .catch(err => console.log(err));
+
+// Redis
+const redis = new Redis();
 
 //===================================================================
 // Passport config
@@ -64,49 +69,48 @@ app.get('/*', function (req, res) {
 // Chat Service **************************************************************************
 
 const io = require('socket.io')(server);
-// This is solutions is temporary and is aimed to be relaced with cache memory (redis implementation)
-const users = [];
-
 io.on('connection', (socket) => {
     socket.on('connected', sender => {
         console.log('connected', socket.id);
-        users.push({ sender, id: socket.id });
+        user = sender;
+        redis.hmset(sender, 'id', socket.id);
     })
     socket.on('private', (msg) => {
         let socketId;
-        users.forEach(user => {
-            if (user.sender == msg.reciever) {
-                socketId = user.id;
-            }
-        });
-        console.log(msg);
-        // Send message to the user in real time
-        io.to(`${socketId}`).emit('message', msg);
-        // Store message into database for later retrieval --Sender
-        User.findOne({ username: msg.sender })
-            .then(res => {
-                const chatLog = res.friends.get(msg.reciever);
-                chatLog.push(msg);
-                res.friends.set(msg.reciever, chatLog);
-                res.save()
-                    .then(res => console.log(res))
-                    .catch(err => console.log(err));
-            })
-            .catch(err => console.log(err));
-        // Store message into database for later retrieval --Reciever
-        User.findOne({ username: msg.reciever })
-            .then(res => {
-                const chatLog = res.friends.get(msg.sender);
-                chatLog.push(msg);
-                res.friends.set(msg.sender, chatLog);
-                res.save()
-                    .then(res => console.log(res))
-                    .catch(err => console.log(err));
-            })
-            .catch(err => console.log(err));
-
+        redis.hgetall(msg.reciever).then(res => {
+            console.log('Response', res['id']);
+            socketId = res.id;
+            console.log('message:', msg);
+            console.log('SocketID:', socketId);
+            // Send message to the user in real time
+            io.to(`${socketId}`).emit('message', msg);
+            // Store message into database for later retrieval --Sender
+            User.findOne({ username: msg.sender })
+                .then(res => {
+                    const chatLog = res.friends.get(msg.reciever);
+                    chatLog.push(msg);
+                    res.friends.set(msg.reciever, chatLog);
+                    res.save()
+                        .then(res => console.log(res))
+                        .catch(err => console.log(err));
+                })
+                .catch(err => console.log(err));
+            // Store message into database for later retrieval --Reciever
+            User.findOne({ username: msg.reciever })
+                .then(res => {
+                    const chatLog = res.friends.get(msg.sender);
+                    chatLog.push(msg);
+                    res.friends.set(msg.sender, chatLog);
+                    res.save()
+                        .then(res => console.log(res))
+                        .catch(err => console.log(err));
+                })
+                .catch(err => console.log(err));
+        }).catch(err => console.log(err));
     });
-    socket.on('disconnect', () => console.log('Disconnected', socket.id));
+    socket.on('disconnect', () => {
+        console.log('Disconnected', socket.id);
+    });
 });
 
 // ***************************************************************************************

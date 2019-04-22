@@ -9,7 +9,7 @@ import io from 'socket.io-client';
 import Message from '../components/Message/message';
 import Friend from '../components/Friend/friend';
 
-const socket = io.connect('/');
+const socket = io.connect('/', { transports: ['websocket'] });
 
 // Initiate connection the socket
 const connectToSocket = sender => {
